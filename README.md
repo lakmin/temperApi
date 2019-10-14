@@ -7,6 +7,11 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
+1 Backend 
+cd api
+php -S localhost:1000
+
+2 Frontend
 npm run serve
 ```
 
