@@ -13,7 +13,7 @@ ii. php -S localhost:1000
 ```
 
 2. Backend (Laravel)
-
+```
 i. cd api_laravel
 ii. composer install
 iii. npm install
@@ -22,6 +22,7 @@ i. php artisan migrate
 vi. php artisan serve
 ```
 3 Frontend
+```
 i. npm run serve
 ```
 
