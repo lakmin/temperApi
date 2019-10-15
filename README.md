@@ -1,5 +1,5 @@
 # temper
-![alt text](https://lakmin.online/test/img.png)
+![alt text](https://lakmin.online/test/screen.png)
 
 ## Project setup
 ```
