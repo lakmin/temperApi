@@ -8,18 +8,6 @@ use DateTime;
 
 class TemperController extends Controller {
 
-
-    public function __construct(Type $var = null) {
-        
-        // required headers autoload
-        header("Access-Control-Allow-Origin: *");
-        header("Content-Type: application/json; charset=UTF-8");
-        header("Access-Control-Allow-Methods: POST");
-        header("Access-Control-Max-Age: 3600");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-    }
-
-
 	public function index() { }
     
     /**
@@ -143,6 +131,14 @@ class TemperController extends Controller {
         }
 
         //print_r($chartArray);
+
+         // required headers autoload (due to the development on 2 different server)
+         header("Access-Control-Allow-Origin: *");
+         header("Content-Type: application/json; charset=UTF-8");
+         header("Access-Control-Allow-Methods: POST");
+         header("Access-Control-Max-Age: 3600");
+         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+ 
         return response()->json($chartArray)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
     }
