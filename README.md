@@ -6,8 +6,9 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
-```
+
 1 Backend (VANILA PHP)
+```
 i. cd api
 ii. php -S localhost:1000
 ```
