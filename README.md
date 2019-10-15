@@ -1,4 +1,4 @@
-# temper
+# Temper - Weekly Retention Curve by Lakmin Gunawardena - used Highcharts and Vuejs
 ![alt text](https://lakmin.online/test/screen.png)
 
 ## Project setup
