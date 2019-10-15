@@ -11,8 +11,12 @@ class Api{
         $tags = [];
     }
 
-    //connect csv file and assign to data
-    public function csvConnect($csv_c){ 
+
+/**
+ * connect csv file and assign to data
+ * @return Array set of data
+ */    
+ public function csvConnect($csv_c){ 
         if (($h = fopen("{$csv_c}", "r")) !== FALSE){
             while (($data = fgetcsv($h, 1000, ",")) !== FALSE) {
             
@@ -25,7 +29,12 @@ class Api{
         }
     }
 
-    //resetting the data array 
+/*
+*
+* re-assigning data from csv
+* @return Mixed
+*/
+     
     public function data_series($group_values){
 
         foreach ($group_values as $value) {
@@ -45,7 +54,11 @@ class Api{
         return $data_return;
     }
     
-
+/*
+*
+* setting data from csv
+* @return Mixed
+*/
 
     public function set_series($dataload){
 
@@ -53,21 +66,10 @@ class Api{
         $arr = array();
 
         foreach ($set_values as $key => $item) {
+
             $arr[$item['created_at']][$key] = $item['onboarding_perentage'];
         }
         return $arr;
-    }
-    
-
-    public function group_by_week($dataload){
-
-        print_r($dataload);
-
-        $startDate = \DateTime::createFromFormat('Y-m-d', $item['startdate']);
-        $week = intval($startDate->format('W'));
-        $day = intval($startDate->format('N'));
-
-        $a = ($day < 6 ) ? $week-1 : $week;
     }
 
     //To remove the title data from data file    
@@ -76,31 +78,69 @@ class Api{
         array_shift($data);
         return $data;
     }
-
+    
     public function api_load_json_data($dataload){
 
         if (isset($dataload)) {
 
             $set_series = $this->set_series($dataload);
             $data_series_add = [];
-
-
-            // $group_by_week(){
-            //     group_by_week
-            // }
-
-
             foreach ($set_series as $key => $series) {
                 $data_set = [];
-                
-                $data_set['name'] = $key;
-                $data_set['data'] = $series;
 
-                array_push($data_series_add, $data_set);
+                $dateTime = new DateTime($key);
+                $startDate = \DateTime::createFromFormat('Y-m-d', $key);
+                $week = intval($startDate->format('W'));
+                $day = intval($startDate->format('N'));
+                $a = ($day < 6) ? $week - 1 : $week;
+               
+                    $data_set['week'] = $week;  
+                    $data_set['name'] = $key;
+                    $data_set['data'] =  $series;
+                    array_push($data_series_add, $data_set);
+
+                } 
+            $tmp = array();
+
+            foreach($data_series_add as $arg)
+            {
+                $tmp[$arg['week']]['week'] = $arg['week'];
+                $tmp[$arg['week']]['name'] = $arg['name'];
+                $tmp[$arg['week']]['data'] =   $arg['data'];
             }
 
-            $data ['series'] = $data_series_add;
+            $output = array();
 
+            foreach($tmp as $type => $labels)
+            {
+                $output[] = array(
+                    'name' => $labels['name'],
+                    'data' => $labels['data'],
+                );
+            }
+
+            $data ['series'] = $output;
+            
+            # SET heightcharts Legend
+            $data ["legend"] = array (
+                "layout" => "vertical",
+                "align" => "right",
+                "verticalAlign" => "middle"
+            );
+
+            $data ["credits"] = array (
+                "enabled" => false
+            );
+            $data ["xAxis"] = array (
+                "categories" => array ()
+            );
+            $data ["tooltip"] = array (
+                "valueSuffix" => "%"
+            );
+                        
+            $data ["chart"] = array (
+                "type" => "spline"
+            );
 
             /* 
             The current steps in onboarding are:
@@ -127,6 +167,18 @@ class Api{
                 '100'
             );
 
+            # SET heightcharts yAxis info
+            $data ["yAxis"] = array (
+                "title" => array (
+                    "text" => "Percentage of Users (Entire Onboarded)"
+                ),
+                'labels' => array(
+                    'format' => '{value}%'
+                ),
+                'min' => '0',
+                'max' => '100'
+            );
+
             //xAxis
             $data ["xAxis"] = array (
                 "categories" => $categoryArray,
@@ -150,13 +202,10 @@ class Api{
                 "text" => "By Lakmin"
             );
 
-
             return $data;
-
-
         } else {
-
             header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
         }
     }
+
 }

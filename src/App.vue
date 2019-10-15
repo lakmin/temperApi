@@ -1,26 +1,27 @@
 <template>
   <div id="app">
-    <img src="{ image }">
+   
     <highcharts :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import HighchartsVue from 'highcharts-vue'
 
-import {Chart} from 'highcharts-vue'
 import axios from 'axios';
+
 
 import image from '@/assets/logo.png'
 
+Vue.use(HighchartsVue)
+
 export default {
   name: 'app',
-  components: {
-    highcharts: Chart,
-  },
   data() {
 		return {
       chartOptions: {},
-      action: 'http://localhost:1000/',
+      action: 'http://127.0.0.1:8000/get_temper_info',
     }
   },
   mounted() {
