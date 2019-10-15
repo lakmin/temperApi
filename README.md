@@ -13,7 +13,7 @@ i. cd api
 ii. php -S localhost:1000
 ```
 
-2. Backend (Laravel)
+2. Backend (Laravel) - completed
 ```
 i. cd api_laravel
 ii. composer install
